@@ -25,7 +25,7 @@ export const siteConfig = {
   location: "Atlanta, GA United States",
 
   /** Canonical URL. Used for metadata, sitemap, and OG tags. */
-  url: "https://example.com",
+  url: "https://dcastor.dev",
 
   /** Path inside /public. Leave empty to hide the resume button. */
   resumePath: "/resume.pdf",
@@ -40,7 +40,7 @@ export const siteConfig = {
   meta: {
     title: "Darnel Castor | Portfolio",
     description:
-      "Portfolio showcasing my projects, skills and experience.",
+      "Portfolio showcasing my projects, skills, certifications, and experience.",
     /** Path inside /public — 1200x630 recommended. */
     ogImage: "/og.png",
   },
