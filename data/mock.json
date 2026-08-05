@@ -1,0 +1,233 @@
+{
+  "pageInfo": {
+    "_id": "mock-pageInfo",
+    "_type": "pageInfo",
+    "name": "Darnel Castor",
+    "role": "Full Stack Developer",
+    "address": "City, Country",
+    "email": "contact@dcastor.dev",
+    "phoneNumber": "+1 555 000 0000",
+    "backgroundInformation": "This is placeholder content shipped with the template. Replace it by connecting a Sanity project, or by editing data/mock.json directly. Write two or three sentences here about who you are, what you build, and what you are looking for.",
+    "profilePic": "https://placehold.co/400x400/2C6975/ffffff?text=You",
+    "heroImage": "https://placehold.co/400x400/2C6975/ffffff?text=Hero"
+  },
+  "experiences": [
+    {
+      "_id": "mock-exp-1",
+      "_type": "experience",
+      "jobTitle": "Senior Software Engineer",
+      "company": "Example Corp",
+      "companyImage": "https://placehold.co/200x200/68B2A0/ffffff?text=EC",
+      "dateStarted": "2023-01-01",
+      "dateEnded": "2024-01-01",
+      "isCurrentlyWorkingHere": true,
+      "points": [
+        "Led development of a customer-facing dashboard used by 10k+ monthly users.",
+        "Cut API p95 latency by 40% through query optimization and caching.",
+        "Mentored two junior engineers through onboarding and their first shipped features."
+      ],
+      "technologies": [
+        {
+          "_id": "mock-tech-1",
+          "_type": "technology",
+          "title": "TypeScript",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/3178c6/ffffff?text=TS"
+        },
+        {
+          "_id": "mock-tech-2",
+          "_type": "technology",
+          "title": "Next.js",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/111111/ffffff?text=N"
+        }
+      ]
+    },
+    {
+      "_id": "mock-exp-2",
+      "_type": "experience",
+      "jobTitle": "Software Engineer",
+      "company": "Another Company",
+      "companyImage": "https://placehold.co/200x200/2C6975/ffffff?text=AC",
+      "dateStarted": "2021-06-01",
+      "dateEnded": "2022-12-01",
+      "isCurrentlyWorkingHere": false,
+      "points": [
+        "Built and maintained internal tooling used across three product teams.",
+        "Migrated a legacy service to a containerized deployment."
+      ],
+      "technologies": [
+        {
+          "_id": "mock-tech-3",
+          "_type": "technology",
+          "title": "Python",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/3776ab/ffffff?text=Py"
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "_id": "mock-skill-1",
+      "_type": "skill",
+      "title": "TypeScript",
+      "progress": 90,
+      "image": "https://placehold.co/100x100/3178c6/ffffff?text=TS"
+    },
+    {
+      "_id": "mock-skill-2",
+      "_type": "skill",
+      "title": "React",
+      "progress": 88,
+      "image": "https://placehold.co/100x100/61dafb/ffffff?text=R"
+    },
+    {
+      "_id": "mock-skill-3",
+      "_type": "skill",
+      "title": "Next.js",
+      "progress": 85,
+      "image": "https://placehold.co/100x100/111111/ffffff?text=N"
+    },
+    {
+      "_id": "mock-skill-4",
+      "_type": "skill",
+      "title": "Tailwind",
+      "progress": 82,
+      "image": "https://placehold.co/100x100/38bdf8/ffffff?text=TW"
+    },
+    {
+      "_id": "mock-skill-5",
+      "_type": "skill",
+      "title": "Node.js",
+      "progress": 78,
+      "image": "https://placehold.co/100x100/339933/ffffff?text=No"
+    },
+    {
+      "_id": "mock-skill-6",
+      "_type": "skill",
+      "title": "PostgreSQL",
+      "progress": 75,
+      "image": "https://placehold.co/100x100/336791/ffffff?text=PG"
+    },
+    {
+      "_id": "mock-skill-7",
+      "_type": "skill",
+      "title": "Docker",
+      "progress": 70,
+      "image": "https://placehold.co/100x100/2496ed/ffffff?text=D"
+    },
+    {
+      "_id": "mock-skill-8",
+      "_type": "skill",
+      "title": "Cloud",
+      "progress": 68,
+      "image": "https://placehold.co/100x100/ff9900/ffffff?text=C"
+    }
+  ],
+  "projects": [
+    {
+      "_id": "mock-proj-1",
+      "_type": "project",
+      "title": "Project One",
+      "summary": "A one-paragraph description of what this project does, what problem it solves, and what was interesting about building it. Two to four sentences works well here.",
+      "image": "https://placehold.co/800x500/2C6975/ffffff?text=Project+One",
+      "linkToBuild": "https://github.com/yourhandle/project-one",
+      "technologies": [
+        {
+          "_id": "mock-tech-1",
+          "_type": "technology",
+          "title": "TypeScript",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/3178c6/ffffff?text=TS"
+        },
+        {
+          "_id": "mock-tech-2",
+          "_type": "technology",
+          "title": "Next.js",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/111111/ffffff?text=N"
+        }
+      ]
+    },
+    {
+      "_id": "mock-proj-2",
+      "_type": "project",
+      "title": "Project Two",
+      "summary": "Another placeholder project. Swap these out for real work: three to five strong projects reads better than ten weak ones.",
+      "image": "https://placehold.co/800x500/68B2A0/ffffff?text=Project+Two",
+      "linkToBuild": "https://github.com/yourhandle/project-two",
+      "technologies": [
+        {
+          "_id": "mock-tech-3",
+          "_type": "technology",
+          "title": "Python",
+          "progress": 85,
+          "image": "https://placehold.co/100x100/3776ab/ffffff?text=Py"
+        }
+      ]
+    }
+  ],
+  "socials": [
+    {
+      "_id": "mock-social-1",
+      "_type": "social",
+      "title": "GitHub",
+      "url": "https://github.com/yourhandle"
+    },
+    {
+      "_id": "mock-social-2",
+      "_type": "social",
+      "title": "LinkedIn",
+      "url": "https://linkedin.com/in/yourhandle"
+    }
+  ],
+  "certifications": [
+    {
+      "_id": "mock-cert-1",
+      "_type": "certification",
+      "title": "Cloud Practitioner",
+      "issuer": "Example Cloud Provider",
+      "badgeImageUrl": "https://placehold.co/340x340/ff9900/ffffff?text=Badge",
+      "verifyUrl": "https://example.com/verify/placeholder-1",
+      "credentialId": "ABC123XYZ",
+      "dateIssued": "2024-03-15",
+      "dateExpires": "2027-03-15",
+      "featured": true,
+      "skills": [
+        "Cloud",
+        "Architecture",
+        "Security"
+      ]
+    },
+    {
+      "_id": "mock-cert-2",
+      "_type": "certification",
+      "title": "Associate Data Engineer",
+      "issuer": "Example Learning Platform",
+      "badgeImageUrl": "https://placehold.co/340x340/03ef62/000000?text=Badge",
+      "verifyUrl": "https://example.com/verify/placeholder-2",
+      "dateIssued": "2024-08-01",
+      "featured": false,
+      "skills": [
+        "Python",
+        "SQL",
+        "ETL"
+      ]
+    },
+    {
+      "_id": "mock-cert-3",
+      "_type": "certification",
+      "title": "Expired Credential Example",
+      "issuer": "Example Issuer",
+      "badgeImageUrl": "https://placehold.co/340x340/6b7280/ffffff?text=Badge",
+      "verifyUrl": "https://example.com/verify/placeholder-3",
+      "dateIssued": "2020-01-10",
+      "dateExpires": "2023-01-10",
+      "featured": false,
+      "skills": [
+        "Legacy"
+      ]
+    }
+  ]
+}
