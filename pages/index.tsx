@@ -25,7 +25,6 @@ const Home = ({
   skills,
   socials,
   certifications,
-  isMock,
 }: Props) => {
   const analyticsId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
@@ -61,14 +60,6 @@ const Home = ({
               gtag('config', '${analyticsId}')`}
           </Script>
         </>
-      )}
-
-      {/* Demo banner disappears once Sanity is connected. */}
-      {isMock && (
-        <div className="sticky top-0 z-50 bg-darkGreen px-4 py-1.5 text-center text-xs text-white">
-          Demo content — edit <code className="font-mono">config/site.ts</code>{" "}
-          and <code className="font-mono">data/mock.json</code>, or connect Sanity.
-        </div>
       )}
 
       <Header socials={socials} />
