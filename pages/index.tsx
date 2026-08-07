@@ -30,8 +30,8 @@ const Home = ({
 
   return (
     <div
-      className="bg-lightBackground text-darkBlack h-screen snap-y snap-mandatory
-    overflow-y-scroll overflow-x-hidden z-0 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-darkGreen/80"
+      className="bg-lightBackground text-darkBlack dark:bg-darkBackground dark:text-white h-screen snap-y snap-mandatory
+    overflow-y-scroll overflow-x-hidden z-0 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-darkGreen/80 transition-colors duration-300"
     >
       <Head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

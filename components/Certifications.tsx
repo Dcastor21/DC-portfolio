@@ -43,7 +43,7 @@ function BadgeCard({
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay: reduceMotion ? 0 : index * 0.08 }}
       className="group flex w-[210px] flex-shrink-0 snap-center flex-col items-center
-                 rounded-xl border border-darkGreen/20 bg-white p-5 text-center
+                 rounded-xl border border-darkGreen/20 bg-white dark:bg-darkBackground p-5 text-center
                  shadow-sm transition-all duration-200
                  hover:border-darkGreen hover:shadow-md
                  focus-visible:outline focus-visible:outline-2
@@ -72,7 +72,7 @@ function BadgeCard({
         )}
       </div>
 
-      <h4 className="mt-4 text-sm font-semibold leading-snug text-darkBlack">
+      <h4 className="mt-4 text-sm font-semibold leading-snug text-darkBlack dark:text-white">
         {cert.title}
       </h4>
 

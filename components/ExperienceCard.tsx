@@ -7,7 +7,7 @@ type Props = { experience: Experience };
 
 export default function ExperienceCard({ experience }: Props) {
   return (
-    <article className=" flex drop-shadow-xl flex-col rounded-3xl items-center space-y-0 flex-shrink-0 w-72  md:w-[600px] xl:w-[700px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/20 p-5 md:p10 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
+    <article className=" flex drop-shadow-xl flex-col rounded-3xl items-center space-y-0 flex-shrink-0 w-72  md:w-[600px] xl:w-[700px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/20 dark:bg-none dark:bg-darkBackground dark:from-transparent dark:to-transparent p-5 md:p10 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
       <motion.img
         initial={{ opacity: 0, y: -100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -20,7 +20,7 @@ export default function ExperienceCard({ experience }: Props) {
       <div className="w-full px-0 md:px-10">
         <div className=" md:flex md:justify-between items-center">
           <div>
-            <h4 className="text-lg md:text-3xl font-light text-black">
+            <h4 className="text-lg md:text-3xl font-light text-black dark:text-white">
               {experience?.jobTitle}
             </h4>
             <p className="font-bold text-md md:text-2xl  mt-1 text-lightGreen">
@@ -54,7 +54,7 @@ export default function ExperienceCard({ experience }: Props) {
             : new Date(experience?.dateEnded).toDateString()}
         </p>
       </div>
-      <ul className="px-0 md:px-10 list-disc  text-black space-y-2 pr-5 text-justify ml-0 text-sm md:text-lg pl-5 overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-darkGreen/80">
+      <ul className="px-0 md:px-10 list-disc  text-black dark:text-white space-y-2 pr-5 text-justify ml-0 text-sm md:text-lg pl-5 overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-darkGreen/80">
         {experience?.points.map((point, i) => (
           <li key={i}>{point}</li>
         ))}
