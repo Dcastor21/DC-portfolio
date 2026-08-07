@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import React from "react";
 import { SocialIcon } from "react-social-icons";
 import { Social } from "../typings";
-import ThemeToggle from "./ThemeToggle";
 
 type Props = {
   socials: Social[];
@@ -65,10 +64,6 @@ export default function Header({ socials }: Props) {
           Get in touch
         </a>
       </motion.div>
-
-      <div className="ml-4">
-        <ThemeToggle />
-      </div>
     </header>
   );
 }
