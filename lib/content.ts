@@ -8,6 +8,7 @@ import type {
   Project,
   Social,
   Certification,
+  Education,
 } from "../typings";
 
 export type PortfolioContent = {
@@ -17,25 +18,27 @@ export type PortfolioContent = {
   projects: Project[];
   socials: Social[];
   certifications: Certification[];
+  education: Education[];
 };
 
 const queries = {
   pageInfo: groq`*[_type == "pageInfo"][0]`,
-  experiences: groq`*[_type == "experience"] {
+  experiences: groq`*[_type == "experience"] | order(dateStarted desc) {
     ...,
     technologies[]->
   }`,
   skills: groq`*[_type == "skill"]`,
-  projects: groq`*[_type == "project"] {
+  projects: groq`*[_type == "project"] | order(order asc, dateStarted desc) {
     ...,
     technologies[]->
   }`,
   socials: groq`*[_type == "social"]`,
   certifications: groq`*[_type == "certification"] | order(featured desc, dateIssued desc)`,
+  education: groq`*[_type == "education"] | order(order asc)`,
 };
 
 export async function getPortfolioContent(): Promise<PortfolioContent> {
-  const [pageInfo, experiences, skills, projects, socials, certifications] =
+  const [pageInfo, experiences, skills, projects, socials, certifications, education] =
     await Promise.all([
       sanityClient.fetch<PageInfo>(queries.pageInfo),
       sanityClient.fetch<Experience[]>(queries.experiences),
@@ -43,6 +46,7 @@ export async function getPortfolioContent(): Promise<PortfolioContent> {
       sanityClient.fetch<Project[]>(queries.projects),
       sanityClient.fetch<Social[]>(queries.socials),
       sanityClient.fetch<Certification[]>(queries.certifications),
+      sanityClient.fetch<Education[]>(queries.education),
     ]);
 
   return {
@@ -52,5 +56,6 @@ export async function getPortfolioContent(): Promise<PortfolioContent> {
     projects: projects ?? [],
     socials: socials ?? [],
     certifications: certifications ?? [],
+    education: education ?? [],
   };
 }
