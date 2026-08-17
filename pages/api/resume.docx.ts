@@ -12,7 +12,12 @@ import {
 } from "docx";
 
 import { getPortfolioContent } from "../../lib/content";
-import { formatDateRange, formatMonthYear, groupSkillsByCategory } from "../../lib/resume-format";
+import {
+  flattenSkillsInOrder,
+  formatDateRange,
+  formatExpiry,
+  formatMonthYear,
+} from "../../lib/resume-format";
 
 const BODY_SIZE = 19; // 9.5pt (docx sizes are in half-points)
 const NAME_SIZE = 32; // 16pt
@@ -34,15 +39,16 @@ function sectionHeading(text: string): Paragraph {
 function splitRow(
   left: string,
   right: string,
-  opts: { bold?: boolean; italics?: boolean; spacingBefore?: number } = {}
+  opts: { bold?: boolean; italics?: boolean; spacingBefore?: number; size?: number } = {}
 ): Paragraph {
+  const size = opts.size ?? BODY_SIZE;
   return new Paragraph({
     tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
     spacing: { before: opts.spacingBefore ?? 0 },
     children: [
-      new TextRun({ text: left, bold: opts.bold, italics: opts.italics, size: BODY_SIZE }),
+      new TextRun({ text: left, bold: opts.bold, italics: opts.italics, size }),
       ...(right
-        ? [new TextRun({ text: `\t${right}`, bold: opts.bold, italics: opts.italics, size: BODY_SIZE })]
+        ? [new TextRun({ text: `\t${right}`, bold: opts.bold, italics: opts.italics, size })]
         : []),
     ],
   });
@@ -65,22 +71,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { pageInfo, experiences, skills, projects, socials, certifications, education } =
       await getPortfolioContent();
 
-    const skillGroups = groupSkillsByCategory(skills);
+    const flatSkills = flattenSkillsInOrder(skills);
 
-    // Contact line: plain text for address/phone, hyperlinks for email + socials.
+    // Contact line — email + socials only, matching the web page (no
+    // phone/address in this format).
     const contactRuns: (TextRun | ExternalHyperlink)[] = [];
     const pushSeparator = () => {
       if (contactRuns.length > 0) contactRuns.push(new TextRun({ text: "  |  ", size: BODY_SIZE }));
     };
-    if (pageInfo?.address) {
-      contactRuns.push(new TextRun({ text: pageInfo.address, size: BODY_SIZE }));
-    }
-    if (pageInfo?.phoneNumber) {
-      pushSeparator();
-      contactRuns.push(new TextRun({ text: pageInfo.phoneNumber, size: BODY_SIZE }));
-    }
     if (pageInfo?.email) {
-      pushSeparator();
       contactRuns.push(
         new ExternalHyperlink({
           link: `mailto:${pageInfo.email}`,
@@ -112,17 +111,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }),
     ];
 
+    if (pageInfo?.backgroundInformation || pageInfo?.summaryHighlights?.length) {
+      children.push(sectionHeading("Professional Summary"));
+      if (pageInfo?.backgroundInformation) {
+        children.push(
+          new Paragraph({ children: [new TextRun({ text: pageInfo.backgroundInformation, size: BODY_SIZE })] })
+        );
+      }
+      (pageInfo?.summaryHighlights ?? []).forEach((p) => children.push(bullet(p)));
+    }
+
+    if (flatSkills.length) {
+      children.push(sectionHeading("Skills"));
+      children.push(
+        new Paragraph({ children: [new TextRun({ text: flatSkills.join(", "), size: BODY_SIZE })] })
+      );
+    }
+
     if (experiences?.length) {
-      children.push(sectionHeading("Professional Experience"));
+      children.push(sectionHeading("Experience"));
       experiences.forEach((exp, i) => {
+        const left = [exp.jobTitle, exp.company, exp.location].filter(Boolean).join(" | ");
         children.push(
           splitRow(
-            exp.company,
+            left,
             formatDateRange(exp.dateStarted, exp.dateEnded, exp.isCurrentlyWorkingHere),
             { bold: true, spacingBefore: i === 0 ? 0 : 160 }
           )
         );
-        children.push(splitRow(exp.jobTitle, exp.location ?? "", { italics: true }));
         if (exp.description) {
           children.push(new Paragraph({ children: [new TextRun({ text: exp.description, size: BODY_SIZE })] }));
         }
@@ -130,31 +146,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    if (skillGroups.length) {
-      children.push(sectionHeading("Skills"));
-      skillGroups.forEach((group) => {
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({ text: `${group.category}: `, bold: true, size: BODY_SIZE }),
-              new TextRun({ text: group.items.join(", "), size: BODY_SIZE }),
-            ],
-          })
-        );
-      });
-    }
-
     if (projects?.length) {
-      children.push(sectionHeading("Projects & Outside Experience"));
+      children.push(sectionHeading("Projects / Portfolio"));
       projects.forEach((project, i) => {
+        const left = [project.title, project.role].filter(Boolean).join(", ");
         children.push(
           splitRow(
-            project.title,
+            left,
             formatDateRange(project.dateStarted, project.dateEnded, project.isOngoing),
             { bold: true, spacingBefore: i === 0 ? 0 : 160 }
           )
         );
+        if (project.linkToBuild) {
+          children.push(
+            new Paragraph({
+              children: [
+                new ExternalHyperlink({
+                  link: project.linkToBuild,
+                  children: [new TextRun({ text: project.linkToBuild, size: 17, style: "Hyperlink" })],
+                }),
+              ],
+            })
+          );
+        }
+        if (project.summary) {
+          children.push(new Paragraph({ children: [new TextRun({ text: project.summary, size: BODY_SIZE })] }));
+        }
         (project.points ?? []).forEach((p) => children.push(bullet(p)));
+        if (project.technologies?.length) {
+          const stack = project.technologies.map((t) => t.title).join(", ");
+          children.push(new Paragraph({ children: [new TextRun({ text: stack, italics: true, size: 17 })] }));
+        }
       });
     }
 
@@ -162,24 +184,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       children.push(sectionHeading("Education"));
       education.forEach((edu, i) => {
         children.push(splitRow(edu.school, "", { bold: true, spacingBefore: i === 0 ? 0 : 120 }));
-        children.push(splitRow(edu.degree ?? "", edu.location ?? "", { italics: true }));
+        children.push(splitRow([edu.degree, edu.location].filter(Boolean).join(", "), "", { italics: true }));
         (edu.points ?? []).forEach((p) => children.push(bullet(p)));
       });
     }
 
     if (certifications?.length) {
-      children.push(sectionHeading("Certifications"));
-      certifications.forEach((cert) => {
-        const label = [cert.issuer, formatMonthYear(cert.dateIssued)].filter(Boolean).join(" - ");
+      children.push(sectionHeading("Certification and Licenses"));
+      certifications.forEach((cert, i) => {
         children.push(
-          new Paragraph({
-            bullet: { level: 0 },
-            children: [
-              new TextRun({ text: cert.title, bold: true, size: BODY_SIZE }),
-              new TextRun({ text: label ? ` : ${label}` : "", size: BODY_SIZE }),
-            ],
-          })
+          splitRow(cert.title, formatMonthYear(cert.dateIssued), { bold: true, spacingBefore: i === 0 ? 0 : 160 })
         );
+        children.push(
+          splitRow(cert.issuer, `Expiry Date: ${formatExpiry(cert.dateExpires)}`, { size: 17 })
+        );
+        if (cert.credentialId) {
+          children.push(
+            new Paragraph({
+              children: cert.verifyUrl
+                ? [
+                    new ExternalHyperlink({
+                      link: cert.verifyUrl,
+                      children: [new TextRun({ text: cert.credentialId, size: 17, style: "Hyperlink" })],
+                    }),
+                  ]
+                : [new TextRun({ text: cert.credentialId, size: 17 })],
+            })
+          );
+        }
+        (cert.points ?? []).forEach((p) => children.push(bullet(p)));
       });
     }
 

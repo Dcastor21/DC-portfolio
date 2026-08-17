@@ -45,7 +45,7 @@ export default {
       name: 'credentialId',
       title: 'Credential ID',
       type: 'string',
-      description: 'Optional.',
+      description: 'Optional. Shown on the resume, linked to the verification URL if set.',
     },
     {
       name: 'dateIssued',
@@ -61,10 +61,19 @@ export default {
       title: 'Expiry date',
       type: 'date',
       description:
-        'Leave blank if the credential does not expire. AWS certifications are valid for three years.',
+        "Leave blank if the credential does not expire — the resume shows 'Expiry Date: N/A' in that case.",
       options: {
         dateFormat: 'YYYY-MM-DD',
       },
+    },
+    {
+      // NEW — e.g. "Complete all solution building assignments aligned to
+      // the Cloud Practitioner role within AWS."
+      name: 'points',
+      title: 'Points',
+      description: 'Optional bullet(s) describing what the credential covers, shown on the resume.',
+      type: 'array',
+      of: [{type: 'string'}],
     },
     {
       name: 'featured',

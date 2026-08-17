@@ -10,6 +10,13 @@ export default {
       type: 'string',
     },
     {
+      // NEW — e.g. "Developer". Shown next to the title on the resume.
+      name: 'role',
+      title: 'Your role',
+      description: "e.g. 'Developer', 'Lead Engineer'. Optional.",
+      type: 'string',
+    },
+    {
       name: 'image',
       title: 'Image',
       description: 'Used on the portfolio project card. Not shown on the resume.',

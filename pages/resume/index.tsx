@@ -5,15 +5,16 @@ import React from "react";
 import { siteConfig } from "../../config/site";
 import { getPortfolioContent, PortfolioContent } from "../../lib/content";
 import {
+  flattenSkillsInOrder,
   formatDateRange,
+  formatExpiry,
   formatMonthYear,
-  groupSkillsByCategory,
 } from "../../lib/resume-format";
 
 type Props = PortfolioContent;
 
-/** Left label / right-aligned value — the "Company ... Dates" row pattern
- *  used throughout the reference resume. */
+/** Left label / right-aligned value — the "X ... Y" row pattern used
+ *  throughout the reference resume (job headers, cert dates, etc). */
 function SplitRow({
   left,
   right,
@@ -52,6 +53,15 @@ function Bullets({ points }: { points?: string[] }) {
   );
 }
 
+/** Small bordered tag — used for the skills cloud and project tech stacks. */
+function Pill({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-block rounded border border-neutral-400 px-1.5 py-0.5 text-[9.5px] leading-none text-neutral-800">
+      {children}
+    </span>
+  );
+}
+
 export default function Resume({
   pageInfo,
   experiences,
@@ -61,10 +71,12 @@ export default function Resume({
   certifications,
   education,
 }: Props) {
-  const skillGroups = groupSkillsByCategory(skills);
+  const flatSkills = flattenSkillsInOrder(skills);
+
+  // Contact line intentionally omits phone/address to match the reference —
+  // email + whatever's in `socials` (LinkedIn, GitHub, a "Website" entry
+  // pointing at dcastor.dev, etc).
   const contactParts = [
-    pageInfo?.address,
-    pageInfo?.phoneNumber,
     pageInfo?.email,
     ...(socials ?? []).map((s) => s.title),
   ].filter(Boolean);
@@ -106,26 +118,47 @@ export default function Resume({
           </p>
         </header>
 
-        {/* Professional Experience */}
+        {/* Professional Summary */}
+        {(pageInfo?.backgroundInformation || pageInfo?.summaryHighlights?.length) && (
+          <section>
+            <SectionHeading>Professional Summary</SectionHeading>
+            {pageInfo?.backgroundInformation && (
+              <p className="text-[10.5px] leading-snug text-neutral-800">
+                {pageInfo.backgroundInformation}
+              </p>
+            )}
+            <Bullets points={pageInfo?.summaryHighlights} />
+          </section>
+        )}
+
+        {/* Skills */}
+        {flatSkills.length > 0 && (
+          <section>
+            <SectionHeading>Skills</SectionHeading>
+            <div className="flex flex-wrap gap-1.5">
+              {flatSkills.map((title) => (
+                <Pill key={title}>{title}</Pill>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Experience */}
         {experiences?.length > 0 && (
           <section>
-            <SectionHeading>Professional Experience</SectionHeading>
+            <SectionHeading>Experience</SectionHeading>
             <div className="space-y-2.5">
               {experiences.map((exp) => (
                 <div key={exp._id}>
                   <SplitRow
-                    left={exp.company}
+                    left={[exp.jobTitle, exp.company, exp.location]
+                      .filter(Boolean)
+                      .join(" | ")}
                     right={formatDateRange(
                       exp.dateStarted,
                       exp.dateEnded,
                       exp.isCurrentlyWorkingHere
                     )}
-                  />
-                  <SplitRow
-                    left={exp.jobTitle}
-                    right={exp.location}
-                    leftClassName="italic text-[10.5px] text-neutral-800"
-                    rightClassName="italic text-[10.5px] text-neutral-700"
                   />
                   {exp.description && (
                     <p className="mt-0.5 text-[10.5px] leading-snug text-neutral-800">
@@ -139,37 +172,42 @@ export default function Resume({
           </section>
         )}
 
-        {/* Skills */}
-        {skillGroups.length > 0 && (
-          <section>
-            <SectionHeading>Skills</SectionHeading>
-            <ul className="space-y-0.5 text-[10.5px] leading-snug text-neutral-800">
-              {skillGroups.map((group) => (
-                <li key={group.category}>
-                  <span className="font-bold">{group.category}: </span>
-                  {group.items.join(", ")}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* Projects & Outside Experience */}
+        {/* Projects / Portfolio */}
         {projects?.length > 0 && (
           <section>
-            <SectionHeading>Projects &amp; Outside Experience</SectionHeading>
-            <div className="space-y-2.5">
+            <SectionHeading>Projects / Portfolio</SectionHeading>
+            <div className="space-y-2">
               {projects.map((project) => (
                 <div key={project._id}>
                   <SplitRow
-                    left={project.title}
+                    left={[project.title, project.role].filter(Boolean).join(", ")}
                     right={formatDateRange(
                       project.dateStarted,
                       project.dateEnded,
                       project.isOngoing
                     )}
                   />
+                  {project.linkToBuild && (
+                    <a
+                      href={project.linkToBuild}
+                      className="text-[10px] text-neutral-600 underline"
+                    >
+                      {project.linkToBuild}
+                    </a>
+                  )}
+                  {project.summary && (
+                    <p className="mt-0.5 text-[10.5px] leading-snug text-neutral-800">
+                      {project.summary}
+                    </p>
+                  )}
                   <Bullets points={project.points} />
+                  {project.technologies?.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      {project.technologies.map((tech) => (
+                        <Pill key={tech._id}>{tech.title}</Pill>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -185,10 +223,8 @@ export default function Resume({
                 <div key={edu._id}>
                   <SplitRow left={edu.school} />
                   <SplitRow
-                    left={edu.degree}
-                    right={edu.location}
+                    left={[edu.degree, edu.location].filter(Boolean).join(", ")}
                     leftClassName="italic text-[10.5px] text-neutral-800"
-                    rightClassName="italic text-[10.5px] text-neutral-700"
                   />
                   <Bullets points={edu.points} />
                 </div>
@@ -197,19 +233,38 @@ export default function Resume({
           </section>
         )}
 
-        {/* Certifications */}
+        {/* Certification and Licenses */}
         {certifications?.length > 0 && (
           <section>
-            <SectionHeading>Certifications</SectionHeading>
-            <ul className="list-disc space-y-0.5 pl-4 text-[10.5px] leading-snug text-neutral-800">
+            <SectionHeading>Certification and Licenses</SectionHeading>
+            <div className="space-y-2">
               {certifications.map((cert) => (
-                <li key={cert._id}>
-                  <span className="font-bold">{cert.title}</span>
-                  {cert.issuer && ` : ${cert.issuer}`}
-                  {cert.dateIssued && ` - ${formatMonthYear(cert.dateIssued)}`}
-                </li>
+                <div key={cert._id}>
+                  <SplitRow
+                    left={cert.title}
+                    right={formatMonthYear(cert.dateIssued)}
+                  />
+                  <SplitRow
+                    left={cert.issuer}
+                    right={`Expiry Date: ${formatExpiry(cert.dateExpires)}`}
+                    leftClassName="text-[10.5px] text-neutral-800"
+                    rightClassName="text-[10px] text-neutral-600"
+                  />
+                  {cert.credentialId && (
+                    <p className="text-[10px] text-neutral-600">
+                      {cert.verifyUrl ? (
+                        <a href={cert.verifyUrl} className="underline">
+                          {cert.credentialId}
+                        </a>
+                      ) : (
+                        cert.credentialId
+                      )}
+                    </p>
+                  )}
+                  <Bullets points={cert.points} />
+                </div>
               ))}
-            </ul>
+            </div>
           </section>
         )}
       </main>

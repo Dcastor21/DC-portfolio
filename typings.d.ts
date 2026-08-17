@@ -17,6 +17,8 @@ export interface PageInfo extends SanityBody {
     _type: 'pageInfo';
     address: string;
     backgroundInformation: string;
+    /** NEW — bullets under the resume's Professional Summary paragraph. */
+    summaryHighlights?: string[];
     email: string;
     role: string;
     heroImage: Image;
@@ -66,6 +68,8 @@ export interface Experience extends SanityBody {
 export interface Project extends SanityBody {
     _type: 'project';
     title: string;
+    /** NEW — e.g. "Developer", shown next to the title on the resume. */
+    role?: string;
     linkToBuild: string;
     image: Image;
     summary: string;
@@ -97,6 +101,8 @@ export interface Certification extends SanityBody {
     dateIssued: string;
     /** Absent means the credential does not expire. */
     dateExpires?: string;
+    /** NEW — optional completion-criteria bullet(s), e.g. what the credential covers. */
+    points?: string[];
     featured?: boolean;
     skills?: string[];
 }

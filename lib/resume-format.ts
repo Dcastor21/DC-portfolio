@@ -31,6 +31,11 @@ export function formatDateRange(
   return `${startLabel} - ${endLabel}`;
 }
 
+/** "2028-11-01" -> "Nov 2028", or "N/A" if the credential doesn't expire. */
+export function formatExpiry(dateString?: string | null): string {
+  return formatMonthYear(dateString) || "N/A";
+}
+
 export type SkillGroup = { category: string; items: string[] };
 
 /**
@@ -51,4 +56,13 @@ export function groupSkillsByCategory(skills: Skill[]): SkillGroup[] {
   return SKILL_CATEGORY_ORDER.filter((category) => byCategory.has(category)).map(
     (category) => ({ category, items: byCategory.get(category)! })
   );
+}
+
+/**
+ * Same ordering as groupSkillsByCategory, flattened into one list — used by
+ * the pill-cloud skills layout, which shows skills grouped in spirit
+ * (languages, then AI/ML, then cloud, ...) without visible category labels.
+ */
+export function flattenSkillsInOrder(skills: Skill[]): string[] {
+  return groupSkillsByCategory(skills).flatMap((group) => group.items);
 }
