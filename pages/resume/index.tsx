@@ -27,9 +27,13 @@ function SplitRow({
   rightClassName?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-4">
-      <span className={leftClassName}>{left}</span>
-      {right && <span className={`shrink-0 text-right ${rightClassName}`}>{right}</span>}
+    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+      <span className={`min-w-0 break-words ${leftClassName}`}>{left}</span>
+      {right && (
+        <span className={`shrink-0 self-start text-left sm:self-auto sm:text-right ${rightClassName}`}>
+          {right}
+        </span>
+      )}
     </div>
   );
 }
@@ -89,7 +93,7 @@ export default function Resume({
       </Head>
 
       {/* Download bar — hidden from print/PDF capture automatically */}
-      <div className="mx-auto mb-4 flex max-w-[8.5in] justify-end gap-3 px-4 print:hidden">
+      <div className="mx-auto mb-4 flex w-full max-w-[8.5in] justify-end gap-3 px-4 print:hidden">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- file download, not a page route */}
         <a
           href="/api/resume.pdf"
@@ -107,7 +111,7 @@ export default function Resume({
       </div>
 
       {/* The page itself — sized to letter, this is what Puppeteer captures */}
-      <main className="mx-auto min-h-[11in] w-[8.5in] max-w-full bg-white px-[0.65in] py-[0.55in] text-neutral-900 shadow-lg print:min-h-0 print:w-auto print:shadow-none">
+      <main className="mx-auto min-h-[11in] w-full max-w-[8.5in] bg-white px-4 py-5 text-neutral-900 shadow-lg sm:px-[0.65in] sm:py-[0.55in] print:min-h-0 print:w-auto print:shadow-none">
         {/* Header */}
         <header className="text-center">
           <h1 className="text-[20px] font-bold uppercase tracking-wide">
