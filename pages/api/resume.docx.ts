@@ -13,10 +13,10 @@ import {
 
 import { getPortfolioContent } from "../../lib/content";
 import {
-  flattenSkillsInOrder,
   formatDateRange,
   formatExpiry,
   formatMonthYear,
+  groupSkillsByCategory,
 } from "../../lib/resume-format";
 
 const BODY_SIZE = 19; // 9.5pt (docx sizes are in half-points)
@@ -71,7 +71,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { pageInfo, experiences, skills, projects, socials, certifications, education } =
       await getPortfolioContent();
 
-    const flatSkills = flattenSkillsInOrder(skills);
+    const skillGroups = groupSkillsByCategory(skills);
 
     // Contact line — email + socials only, matching the web page (no
     // phone/address in this format).
@@ -121,11 +121,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       (pageInfo?.summaryHighlights ?? []).forEach((p) => children.push(bullet(p)));
     }
 
-    if (flatSkills.length) {
+    if (skillGroups.length) {
       children.push(sectionHeading("Skills"));
-      children.push(
-        new Paragraph({ children: [new TextRun({ text: flatSkills.join(", "), size: BODY_SIZE })] })
-      );
+      skillGroups.forEach((group) => {
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `${group.category}: `, bold: true, size: BODY_SIZE }),
+              new TextRun({ text: group.items.join(", "), size: BODY_SIZE }),
+            ],
+          })
+        );
+      });
     }
 
     if (experiences?.length) {

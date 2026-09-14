@@ -57,12 +57,3 @@ export function groupSkillsByCategory(skills: Skill[]): SkillGroup[] {
     (category) => ({ category, items: byCategory.get(category)! })
   );
 }
-
-/**
- * Same ordering as groupSkillsByCategory, flattened into one list — used by
- * the pill-cloud skills layout, which shows skills grouped in spirit
- * (languages, then AI/ML, then cloud, ...) without visible category labels.
- */
-export function flattenSkillsInOrder(skills: Skill[]): string[] {
-  return groupSkillsByCategory(skills).flatMap((group) => group.items);
-}

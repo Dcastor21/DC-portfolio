@@ -72,6 +72,8 @@
       "_id": "mock-skill-1",
       "_type": "skill",
       "title": "TypeScript",
+      "devicon": "typescript",
+      "iconStyle": "color",
       "progress": 90,
       "image": "https://placehold.co/100x100/3178c6/ffffff?text=TS"
     },
@@ -79,6 +81,8 @@
       "_id": "mock-skill-2",
       "_type": "skill",
       "title": "React",
+      "devicon": "react",
+      "iconStyle": "color",
       "progress": 88,
       "image": "https://placehold.co/100x100/61dafb/ffffff?text=R"
     },
@@ -86,6 +90,8 @@
       "_id": "mock-skill-3",
       "_type": "skill",
       "title": "Next.js",
+      "devicon": "nextjs",
+      "iconStyle": "monochrome",
       "progress": 85,
       "image": "https://placehold.co/100x100/111111/ffffff?text=N"
     },
@@ -93,6 +99,7 @@
       "_id": "mock-skill-4",
       "_type": "skill",
       "title": "Tailwind",
+      "devicon": "tailwind",
       "progress": 82,
       "image": "https://placehold.co/100x100/38bdf8/ffffff?text=TW"
     },
@@ -100,6 +107,7 @@
       "_id": "mock-skill-5",
       "_type": "skill",
       "title": "Node.js",
+      "devicon": "nodejs",
       "progress": 78,
       "image": "https://placehold.co/100x100/339933/ffffff?text=No"
     },
@@ -107,6 +115,7 @@
       "_id": "mock-skill-6",
       "_type": "skill",
       "title": "PostgreSQL",
+      "devicon": "postgresql",
       "progress": 75,
       "image": "https://placehold.co/100x100/336791/ffffff?text=PG"
     },
@@ -114,6 +123,7 @@
       "_id": "mock-skill-7",
       "_type": "skill",
       "title": "Docker",
+      "devicon": "docker",
       "progress": 70,
       "image": "https://placehold.co/100x100/2496ed/ffffff?text=D"
     },
