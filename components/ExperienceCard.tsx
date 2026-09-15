@@ -27,14 +27,25 @@ export default function ExperienceCard({ experience }: Props) {
               {experience?.company}
             </p>
             <div className="flex space-x-2 my-2">
-              {experience?.technologies.map((technology) => (
-                <img
-                  key={technology._id}
-                  className="h-10 w-10 rounded-full object-cover"
-                  src={imageUrl(technology?.image)}
-                  alt=""
-                />
-              ))}
+              {experience?.technologies.map((technology) =>
+                technology.devicon ? (
+                  <svg
+                    key={technology._id}
+                    className="h-10 w-10 rounded-full"
+                    role="img"
+                    aria-label={`${technology.title} logo`}
+                  >
+                    <use href={`/devicons-sprite.svg#${technology.devicon}`} />
+                  </svg>
+                ) : (
+                  <img
+                    key={technology._id}
+                    className="h-10 w-10 rounded-full object-cover"
+                    src={imageUrl(technology?.image)}
+                    alt=""
+                  />
+                )
+              )}
             </div>
           </div>
           <motion.img
