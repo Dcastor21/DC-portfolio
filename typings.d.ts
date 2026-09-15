@@ -40,7 +40,6 @@ export interface Skill extends SanityBody {
     progress: number;
     title: string;
     devicon?: string;
-    iconStyle?: 'color' | 'monochrome';
     /** NEW — groups skills for the resume's categorized skill lines. */
     category?:
         | 'Languages'

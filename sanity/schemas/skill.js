@@ -12,22 +12,8 @@ export default {
     {
       name: 'devicon',
       title: 'Devicon slug',
-      description: 'Optional Devicon slug used for the portfolio icon, e.g. react or nextjs.',
+      description: 'Optional devicons.io slug used for the portfolio icon, e.g. react or nextjs.',
       type: 'string',
-    },
-    {
-      name: 'iconStyle',
-      title: 'Icon style',
-      description: 'Choose whether the Devicon uses its brand color or a neutral color.',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Color', value: 'color'},
-          {title: 'Monochrome', value: 'monochrome'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'monochrome',
     },
     {
       // NEW — groups skills into the resume's "Languages / AI & ML / Cloud &

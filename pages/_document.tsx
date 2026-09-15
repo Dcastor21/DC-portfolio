@@ -6,10 +6,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/devicons@2.0.1/dist/devicons.css"
-        />
         {GTM_ID && (
           <script
             dangerouslySetInnerHTML={{

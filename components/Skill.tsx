@@ -8,35 +8,22 @@ type Props = {
   directionLeft?: boolean;
 };
 
-const DEVICON_COLORS: Record<string, string> = {
-  typescript: "#3178c6",
-  react: "#61dafb",
-  nextjs: "#111111",
-  tailwind: "#06b6d4",
-  tailwindcss: "#06b6d4",
-  nodejs: "#339933",
-  postgresql: "#336791",
-  docker: "#2496ed",
-};
+const DEVICONS_SPRITE_URL = "/devicons-sprite.svg";
 
 export default function Skill({ skill, directionLeft }: Props) {
-  const iconColor =
-    skill.iconStyle === "color"
-      ? DEVICON_COLORS[skill.devicon ?? ""] ?? "currentColor"
-      : "#4b5563";
-
   return (
     <div className="group relative flex cursor-pointer">
       {skill.devicon ? (
-        <motion.i
+        <motion.svg
           initial={{ x: directionLeft ? -80 : 80, opacity: 0 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          className={`devicons devicons-${skill.devicon} flex items-center justify-center rounded-full border-2 border-darkGreen text-5xl md:text-6xl lg:text-6xl xl:text-6xl 2xl:text-7xl filter group-hover:grayscale transition duration-300 ease-in-out w-16 h-16 md:w-20 md:h-20 lg:w-20 lg:h-20 xl:w-20 xl:h-20 2xl:w-28 2xl:h-28`}
-          style={{ color: iconColor }}
+          className="rounded-full border-2 border-darkGreen filter group-hover:grayscale transition duration-300 ease-in-out w-16 h-16 md:w-20 md:h-20 lg:w-20 lg:h-20 xl:w-20 xl:h-20 2xl:w-28 2xl:h-28"
           role="img"
           aria-label={`${skill.title} logo`}
-        />
+        >
+          <use href={`${DEVICONS_SPRITE_URL}#${skill.devicon}`} />
+        </motion.svg>
       ) : (
         <motion.img
         initial={{ x: directionLeft ? -80 : 80, opacity: 0 }}
