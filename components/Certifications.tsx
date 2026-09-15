@@ -160,7 +160,7 @@ export default function Certifications({ certifications }: Props) {
         ))}
       </div>
 
-      <div className="w-full absolute top-[30%] bg-lightGreen/10 left-0 h-[300px] -skew-y-12" />
+      <div className="w-full absolute top-[30%] bg-lightGreen/10 left-0 h-[300px] -skew-y-12 pointer-events-none" />
     </motion.div>
   );
 }
